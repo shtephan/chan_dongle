@@ -1,0 +1,24 @@
+--- pdu.c.orig	2014-12-10 15:09:11.000000000 +0300
++++ pdu.c	2014-12-10 14:11:05.000000000 +0300
+@@ -751,9 +752,19 @@
+ 													/* NOTE: UDHL count octets no need calculation */
+ 													if(pdu_length >= (size_t)(udhl * 2))
+ 													{
+-														/* skip UDH */
++														/* skip UDH 
+ 														*pdu += udhl * 2;
+-														pdu_length -= udhl * 2;
++														pdu_length -= udhl * 2; */
++														/* Information element identifier */
++														pdu_parse_byte(pdu, &pdu_length);
++														/* Reminder length */
++														pdu_parse_byte(pdu, &pdu_length);
++														/* CSMS reference number  */
++														*msg_ref = pdu_parse_byte(pdu, &pdu_length);
++														/* Total number of parts  */
++														*msg_parts = pdu_parse_byte(pdu, &pdu_length);
++														/* This part's number  */
++														*msg_part = pdu_parse_byte(pdu, &pdu_length);
+ 													}
+ 													else
+ 													{

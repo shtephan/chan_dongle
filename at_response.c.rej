@@ -1,0 +1,23 @@
+--- at_response.c.orig	2014-12-10 15:09:06.000000000 +0300
++++ at_response.c	2014-12-10 14:12:17.000000000 +0300
+@@ -1248,12 +1251,20 @@
+ 		manager_event_new_sms(PVT_ID(pvt), number, msg);
+ 		manager_event_new_sms_base64(PVT_ID(pvt), number, text_base64);
+ 		{
++			char bufRef[15], bufParts[15], bufPart[15];
++			sprintf(bufRef, "%d", msg_ref);
++			sprintf(bufParts, "%d", msg_parts);
++			sprintf(bufPart, "%d", msg_part);
++
+ 			channel_var_t vars[] = 
+ 			{
+ 				{ "SMS", msg } ,
+ 				{ "SMS_BASE64", text_base64 },
+ 				{ "CMGR", (char *)str },
+ 				{ "DONGLE", PVT_ID(pvt) },
++				{ "REF", bufRef },
++				{ "PARTS", bufParts },
++				{ "PART", bufPart },
+ 				{ NULL, NULL },
+ 			};
+ 			start_local_channel (pvt, "sms", number, vars);
